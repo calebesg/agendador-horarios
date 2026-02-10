@@ -1,7 +1,20 @@
 package com.github.calebesg.agendador_horarios.infrastructure.repository;
 
 import com.github.calebesg.agendador_horarios.infrastructure.entity.Agendamento;
-import org.springframework.data.repository.Repository;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AgendamentoRepository extends Repository<Agendamento, Long> {
+import java.time.LocalDateTime;
+
+public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
+    Agendamento findByServicoAndDataHoraAgendamentoBetween(
+            String servico,
+            LocalDateTime dataLHoraInicio,
+            LocalDateTime dataHoraFim);
+
+    @Transactional
+    void deleteByDataHoraAgendamentoAndCliente(LocalDateTime dataHoraAgendamento, String cliente);
+
+    // listar todos os agendamentos em um intervalo de tempo
+    Agendamento findByDataHoraAgendamentoBetween(LocalDateTime dataHoraInicial, LocalDateTime dataHoraFinal);
 }
