@@ -43,4 +43,15 @@ public class AgendamentoService {
 
         return agendamentoRepository.findByDataHoraAgendamentoBetween(primeiraHoraDoDia, ultimaHoraDoDia);
     }
+
+    public Agendamento alterarAgendamento (Agendamento agendamento, String cliente, LocalDateTime dataHoraAgendamento) {
+        Agendamento agenda = agendamentoRepository.findByDataHoraAgendamentoAndCliente(dataHoraAgendamento, cliente);
+
+        if (Objects.isNull(agenda)) {
+            throw new RuntimeException("Nem um serviço agendado neste horário!");
+        }
+
+        agendamento.setId(agenda.getId());
+        return agendamentoRepository.save(agendamento);
+    }
 }
